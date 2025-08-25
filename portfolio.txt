@@ -1,0 +1,37 @@
+Name: Zartashia Saleem
+Title: Computer Science Student at TU Dublin
+
+Introduction:
+Hi, I am Zartashia. I am a motivated Computer Science student with a strong interest in AI, software development, and innovative problem-solving. With hands-on experience in projects, technical skills, and industry roles, I combine technical expertise with creativity, adaptability, and teamwork. I am passionate about bridging technology and people through impactful digital solutions.
+
+Technical Skills:
+- Node.js, Express, JavaScript, C, C++, Python
+- AI: Prompt Engineering, RAG, OpenAI/Gemini APIs
+
+Soft Skills:
+- Communication & Presentation
+- Team Collaboration
+- Leadership & Mentoring
+- Problem-Solving
+- Adaptability
+- Time Management
+
+Projects:
+- Babylon Radio Chatbot
+- STM32 Bee Game
+- AniMania Website
+- PortTashi AI Chatbot
+
+Work Experience:
+- AI Adoption Strategist at Babylon Radio
+- Brand Ambassador at Titan Experience
+- Sales and Operations Manager at Chai Shai
+- Sales and Operations Manager at Textile Tanneries
+
+Education: 
+- BSc Computer Science, TU Dublin
+
+Contact:
+- Email: saleemzartashia1@gmail.com
+- LinkedIn: linkedin.com/in/zartashia-s
+- GitHub: github.com/tashi128
