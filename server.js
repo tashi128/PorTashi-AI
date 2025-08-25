@@ -3,12 +3,12 @@ import cors from "cors";
 import fs from "fs";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ✅ dynamic port for Render
 
 app.use(cors());
 app.use(express.json());
 
-// Function to load and parse portfolio.txt into sections
+// ✅ Load portfolio.txt once when the server starts
 function loadPortfolio() {
   const text = fs.readFileSync("portfolio.txt", "utf-8");
   const sections = {};
@@ -31,12 +31,11 @@ function loadPortfolio() {
   return sections;
 }
 
-
+const data = loadPortfolio(); // ✅ read once at startup
 
 // Simple chatbot logic
 function getAnswer(message) {
   const msg = message.toLowerCase();
-  const data = loadPortfolio(); // assuming this reads portfolio.txt into structured object
 
   // Greetings → introduction
   if (msg.includes("hi") || msg.includes("hello") || msg.includes("hey")) {
@@ -74,7 +73,6 @@ function getAnswer(message) {
   }
 }
 
-
 // Chat endpoint
 app.post("/chat", (req, res) => {
   const userMessage = req.body.message || "";
@@ -82,6 +80,7 @@ app.post("/chat", (req, res) => {
   res.json({ reply });
 });
 
-app.listen(PORT, () =>
-  console.log(`✅ Offline Portfolio Chatbot running at http://localhost:${PORT}`)
-);
+// ✅ Start server
+app.listen(PORT, () => {
+  console.log(`✅ Portfolio Chatbot running at http://localhost:${PORT}`);
+});
