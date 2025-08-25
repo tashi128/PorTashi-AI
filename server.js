@@ -73,7 +73,7 @@ function getAnswer(message) {
   }
 }
 
-  // Root route (so browser shows something instead of "Cannot GET /")
+          // Root route (so browser shows something instead of "Cannot GET /")
   app.get("/", (req, res) => {
     res.send("🚀 Portashi AI Chatbot backend is running!");
   });
