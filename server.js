@@ -73,21 +73,19 @@ function getAnswer(message) {
   }
 }
 
-  // Root route (for testing in browser)
-app.get("/", (req, res) => {
-  res.send("🚀 Portashi AI Chatbot backend is running!");
-});
+  // Root route (so browser shows something instead of "Cannot GET /")
+  app.get("/", (req, res) => {
+    res.send("🚀 Portashi AI Chatbot backend is running!");
+  });
 
+  // Chat endpoint
+  app.post("/chat", (req, res) => {
+    const userMessage = req.body.message || "";
+    const reply = getAnswer(userMessage);
+    res.json({ reply });
+  });
 
-// Chat endpoint
-app.post("/chat", (req, res) => {
-  const userMessage = req.body.message || "";
-  const reply = getAnswer(userMessage);
-  res.json({ reply });
-});
+  app.listen(PORT, () =>
+    console.log(`✅ Portfolio Chatbot running on port ${PORT}`)
+  );
 
-  
-// ✅ Start server
-app.listen(PORT, () => {
-  console.log(`✅ Portfolio Chatbot running at http://localhost:${PORT}`);
-});
