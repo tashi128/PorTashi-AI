@@ -80,6 +80,11 @@ app.post("/chat", (req, res) => {
   res.json({ reply });
 });
 
+  // Root route (for testing in browser)
+app.get("/", (req, res) => {
+  res.send("🚀 Portashi AI Chatbot backend is running!");
+});
+
 // ✅ Start server
 app.listen(PORT, () => {
   console.log(`✅ Portfolio Chatbot running at http://localhost:${PORT}`);
