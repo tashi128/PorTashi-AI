@@ -14,12 +14,23 @@ Built with **Node.js (Express)** for the backend and a clean **JavaScript + HTML
 
 ---
 
+📖 How to Use
+
+Type "hi" → Bot introduces itself.
+
+Ask "skills" → Shows technical skills.
+
+Ask "projects" → Lists portfolio projects.
+
+Ask "experience", "education", or "contact" → Retrieves info dynamically.
+
+Ask anything else → Bot shows full portfolio as fallback.
+
+---
+
 ## 🛠️ Tech Stack
 - **Frontend:** HTML5, CSS3, JavaScript (ES6)  
 - **Backend:** Node.js, Express.js  
 - **Deployment:** GitHub Pages (frontend) + Render (backend)  
 - **Other Tools:** Git, CORS, dotenv  
 
----
-
-## 📂 Project Structure
