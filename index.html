@@ -171,6 +171,20 @@
       border-radius: 3px;
     }
 
+    /* 🌸 Links inside bot messages */
+    .message.bot a {
+      color: #b05a2c;
+      font-weight: bold;
+      text-decoration: none;
+      border-bottom: 1px dashed #b05a2c;
+      transition: 0.2s;
+    }
+
+    .message.bot a:hover {
+      color: #ff6600;
+      border-bottom: 1px solid #ff6600;
+    }
+
     /* 🌸 Floating blossoms & glitter */
     .blossom {
       position: absolute;
@@ -191,7 +205,6 @@
     <div class="chat-header">
       <span>🌸</span> PorTashi AI
     </div>
-    <!-- Keep empty initially -->
     <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input">
       <input type="text" id="userInput" placeholder="Ask me about Tashi's projects, skills..." />
@@ -204,9 +217,27 @@
     const userInput = document.getElementById("userInput");
     const sendBtn = document.getElementById("sendBtn");
 
-    // Scroll helper
     function scrollToBottom() {
       chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // ✅ Helper to add bot messages
+    function addBotMessage(text) {
+      const botWrapper = document.createElement("div");
+      botWrapper.classList.add("bot-wrapper");
+
+      const botAvatar = document.createElement("div");
+      botAvatar.classList.add("bot-avatar");
+      botAvatar.textContent = "🌸";
+
+      const botDiv = document.createElement("div");
+      botDiv.classList.add("message", "bot");
+      botDiv.innerHTML = text;
+
+      botWrapper.appendChild(botAvatar);
+      botWrapper.appendChild(botDiv);
+      chatMessages.appendChild(botWrapper);
+      scrollToBottom();
     }
 
     async function sendMessage() {
@@ -231,7 +262,7 @@
       scrollToBottom();
       userInput.value = "";
 
-      // Bot "typing"
+      // Bot typing
       const botWrapper = document.createElement("div");
       botWrapper.classList.add("bot-wrapper");
 
@@ -248,7 +279,7 @@
       chatMessages.appendChild(botWrapper);
       scrollToBottom();
 
-      // Fetch response from your backend
+      // Fetch from backend
       try {
         const res = await fetch("https://portashi-ai.onrender.com/chat", {
           method: "POST",
@@ -256,35 +287,7 @@
           body: JSON.stringify({ message })
         });
         const data = await res.json();
-        botDiv.textContent = data.reply || "Sorry, I couldn't generate a response.";
-      } catch {
-        botDiv.textContent = "⚠️ Error connecting to server.";
-      }
 
-      scrollToBottom();
-    }
-
-    sendBtn.addEventListener("click", sendMessage);
-    userInput.addEventListener("keydown", e => {
-      if (e.key === "Enter") sendMessage();
-    });
-
-    // 🌸 Floating blossoms & glitter
-    const numBlossoms = 25;
-    const symbols = ["🌸", "✨"];
-
-    for (let i = 0; i < numBlossoms; i++) {
-      const b = document.createElement("div");
-      b.className = "blossom";
-      b.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-
-      b.style.left = Math.random() * 100 + "vw";
-      b.style.animationDuration = (5 + Math.random() * 10) + "s";
-      b.style.fontSize = (10 + Math.random() * 22) + "px";
-      b.style.animationDelay = (Math.random() * 5) + "s";
-
-      document.body.appendChild(b);
-    }
-  </script>
-</body>
-</html>
+        // Typing delay
+        setTimeout(() => {
+          botDiv.innerHTML = data.reply

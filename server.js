@@ -33,6 +33,29 @@ function loadPortfolio() {
 
 const data = loadPortfolio(); // ✅ read once at startup
 
+// Helper: convert URLs in text into clickable links
+function linkify(text) {
+  if (!text) return "";
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, url => {
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+  });
+}
+
+// Helper: format lists with emojis
+function formatList(text, emoji = "•") {
+  return text
+    .split("\n")
+    .filter(line => line.trim() !== "")
+    .map(line => `${emoji} ${line.replace(/^[-*]\s*/, "")}`)
+    .join("<br>");
+}
+
+// Helper: add section title with emoji
+function formatSection(title, content, emoji = "🌸") {
+  return `<strong>${emoji} ${title}:</strong><br>${content}`;
+}
+
 // Simple chatbot logic
 function getAnswer(message) {
   const msg = message.toLowerCase();
@@ -53,37 +76,56 @@ function getAnswer(message) {
   }
 
   // Portfolio-specific queries
-  if (msg.includes("name")) return data.name;
-  if (msg.includes("title") || msg.includes("who are you")) return data.title;
-  if (msg.includes("intro") || msg.includes("about yourself") || msg.includes("summary")) return data.introduction;
-  if (msg.includes("skill") && !msg.includes("soft")) return data["technical skills"];
-  if (msg.includes("soft skill") || msg.includes("strength")) return data["soft skills"];
-  if (msg.includes("project")) return data.projects;
-  if (msg.includes("experience") || msg.includes("work") || msg.includes("job")) return data["work experience"];
-  if (msg.includes("education") || msg.includes("study")) return data.education;
-  if (msg.includes("contact") || msg.includes("email")) return data.contact;
-  if (msg.includes("linkedin")) return "LinkedIn: " + (data.contact.match(/LinkedIn: (.*)/i)?.[1] || "");
-  if (msg.includes("github")) return "GitHub: " + (data.contact.match(/GitHub: (.*)/i)?.[1] || "");
+  if (msg.includes("name")) return formatSection("Name", linkify(data.name), "👤");
+  if (msg.includes("title") || msg.includes("who are you")) return formatSection("Title", linkify(data.title), "🎓");
+  if (msg.includes("intro") || msg.includes("about yourself") || msg.includes("summary"))
+    return formatSection("Introduction", linkify(data.introduction), "👋");
+  if (msg.includes("skill") && !msg.includes("soft"))
+    return formatSection("Technical Skills", formatList(data["technical skills"], "💻"), "⚡");
+  if (msg.includes("soft skill") || msg.includes("strength"))
+    return formatSection("Soft Skills", formatList(data["soft skills"], "🌟"), "✨");
+  if (msg.includes("project"))
+    return formatSection("Projects", formatList(data.projects, "📂"), "🚀");
+  if (msg.includes("experience") || msg.includes("work") || msg.includes("job"))
+    return formatSection("Work Experience", formatList(data["work experience"], "💼"), "📊");
+  if (msg.includes("education") || msg.includes("study"))
+    return formatSection("Education", linkify(data.education), "🎓");
+  if (msg.includes("contact") || msg.includes("email"))
+    return formatSection("Contact", linkify(data.contact), "📬");
 
-  // Fallback: return full portfolio if no keywords matched
+  // LinkedIn & GitHub clickable links
+  if (msg.includes("linkedin")) {
+    const link = data.contact.match(/LinkedIn: (.*)/i)?.[1] || "";
+    return `🌐 <a href="https://${link}" target="_blank" rel="noopener noreferrer">My LinkedIn Profile</a>`;
+  }
+
+  if (msg.includes("github")) {
+    const link = data.contact.match(/GitHub: (.*)/i)?.[1] || "";
+    return `💻 <a href="https://${link}" target="_blank" rel="noopener noreferrer">My GitHub Repositories</a>`;
+  }
+
+  // Email clickable
+  if (msg.includes("email") || msg.includes("mail")) {
+    const email = data.contact.match(/Email: (.*)/i)?.[1] || "";
+    return `📧 <a href="mailto:${email}">Send me an Email</a>`;
+  }
+
   // ❌ Fallback: irrelevant questions
   return "I can only answer questions related to Zartashia's portfolio, such as skills, projects, experience, education, and contact details. 🌸";
-
 }
 
-          // Root route (so browser shows something instead of "Cannot GET /")
-  app.get("/", (req, res) => {
-    res.send("🚀 Portashi AI Chatbot backend is running!");
-  });
+// Root route (so browser shows something instead of "Cannot GET /")
+app.get("/", (req, res) => {
+  res.send("🚀 Portashi AI Chatbot backend is running!");
+});
 
-  // Chat endpoint
-  app.post("/chat", (req, res) => {
-    const userMessage = req.body.message || "";
-    const reply = getAnswer(userMessage);
-    res.json({ reply });
-  });
+// Chat endpoint
+app.post("/chat", (req, res) => {
+  const userMessage = req.body.message || "";
+  const reply = getAnswer(userMessage);
+  res.json({ reply });
+});
 
-  app.listen(PORT, () =>
-    console.log(`✅ Portfolio Chatbot running on port ${PORT}`)
-  );
-
+app.listen(PORT, () =>
+  console.log(`✅ Portfolio Chatbot running on port ${PORT}`)
+);
