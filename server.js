@@ -1,3 +1,38 @@
+import express from "express";
+import cors from "cors";
+import fs from "fs";
+
+const app = express();
+const PORT = process.env.PORT || 3000; // ✅ dynamic port for Render
+
+app.use(cors());
+app.use(express.json());
+
+// ✅ Load portfolio.txt once when the server starts
+function loadPortfolio() {
+  const text = fs.readFileSync("portfolio.txt", "utf-8");
+  const sections = {};
+  let currentKey = null;
+
+  text.split("\n").forEach(line => {
+    if (line.trim() === "") return; // skip empty lines
+
+    // Detect section headers like "Introduction:" or "Projects:"
+    if (line.includes(":")) {
+      const [key, ...rest] = line.split(":");
+      currentKey = key.trim().toLowerCase();
+      sections[currentKey] = rest.join(":").trim() || "";
+    } else if (currentKey) {
+      // Append bullet points or multi-line content
+      sections[currentKey] += "\n" + line.trim();
+    }
+  });
+
+  return sections;
+}
+
+const data = loadPortfolio(); // ✅ read once at startup
+
 // Simple chatbot logic
 function getAnswer(message) {
   const msg = message.toLowerCase();
@@ -30,6 +65,25 @@ function getAnswer(message) {
   if (msg.includes("linkedin")) return "LinkedIn: " + (data.contact.match(/LinkedIn: (.*)/i)?.[1] || "");
   if (msg.includes("github")) return "GitHub: " + (data.contact.match(/GitHub: (.*)/i)?.[1] || "");
 
+  // Fallback: return full portfolio if no keywords matched
   // ❌ Fallback: irrelevant questions
   return "I can only answer questions related to Zartashia's portfolio, such as skills, projects, experience, education, and contact details. 🌸";
+
 }
+
+          // Root route (so browser shows something instead of "Cannot GET /")
+  app.get("/", (req, res) => {
+    res.send("🚀 Portashi AI Chatbot backend is running!");
+  });
+
+  // Chat endpoint
+  app.post("/chat", (req, res) => {
+    const userMessage = req.body.message || "";
+    const reply = getAnswer(userMessage);
+    res.json({ reply });
+  });
+
+  app.listen(PORT, () =>
+    console.log(`✅ Portfolio Chatbot running on port ${PORT}`)
+  );
+
