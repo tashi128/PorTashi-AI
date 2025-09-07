@@ -221,7 +221,6 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // ✅ Helper to add bot messages
     function addBotMessage(text) {
       const botWrapper = document.createElement("div");
       botWrapper.classList.add("bot-wrapper");
@@ -279,7 +278,6 @@
       chatMessages.appendChild(botWrapper);
       scrollToBottom();
 
-      // Fetch from backend
       try {
         const res = await fetch("https://portashi-ai.onrender.com/chat", {
           method: "POST",
@@ -290,4 +288,35 @@
 
         // Typing delay
         setTimeout(() => {
-          botDiv.innerHTML = data.reply
+          botDiv.innerHTML = data.reply || "Sorry, I couldn't generate a response.";
+          scrollToBottom();
+        }, 600);
+      } catch {
+        botDiv.textContent = "⚠️ Error connecting to server.";
+      }
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    userInput.addEventListener("keydown", e => { if(e.key === "Enter") sendMessage(); });
+
+    // 🌸 Floating blossoms
+    const numBlossoms = 25;
+    const symbols = ["🌸", "✨"];
+    for (let i = 0; i < numBlossoms; i++) {
+      const b = document.createElement("div");
+      b.className = "blossom";
+      b.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      b.style.left = Math.random() * 100 + "vw";
+      b.style.animationDuration = (5 + Math.random() * 10) + "s";
+      b.style.fontSize = (10 + Math.random() * 22) + "px";
+      b.style.animationDelay = (Math.random() * 5) + "s";
+      document.body.appendChild(b);
+    }
+
+    // 🌸 Welcome message
+    window.addEventListener("DOMContentLoaded", () => {
+      addBotMessage("Hi, I’m Zartashia 🌸 I’m a Computer Science student at TU Dublin. Ask me about my skills, projects, work experience, education, or contact details!");
+    });
+  </script>
+</body>
+</html>
