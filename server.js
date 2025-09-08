@@ -60,29 +60,34 @@ function getAnswer(message) {
   }
 
   // Portfolio-specific queries
-  if (msg.includes("contact")) 
+if (msg.includes("contact")) {
   return `
-📬 Here’s how you can reach me:  
+📬 Here is how you can reach me:  
 - ✉️ Email: <a href="mailto:saleemzartashia1@gmail.com">saleemzartashia1@gmail.com</a>  
 - 💼 LinkedIn: <a href="https://www.linkedin.com/in/zartashia-s-66b723349/" target="_blank">linkedin.com/in/zartashia-s</a>  
 - 🐙 GitHub: <a href="https://github.com/tashi128" target="_blank">github.com/tashi128</a>
   `;
-  if (msg.includes("name")) return `🌸 My name is ${data.name}.`;
-  if (msg.includes("title") || msg.includes("who are you")) return `💻 I am ${data.title}.`;
-  if (msg.includes("intro") || msg.includes("about yourself") || msg.includes("summary")) return `✨ ${data.introduction}`;
-  if (msg.includes("project")) return `📁 Projects:\n${data.projects}`;
-  if (msg.includes("experience") || msg.includes("work") || msg.includes("job")) return `🏢 Work Experience:\n${data["work experience"]}`;
-  if (msg.includes("education") || msg.includes("study")) return `🎓 Education:\n${data.education}`;
-  if (msg.includes("contact") || msg.includes("email")) return `📧 Contact:\n${data.contact}`;
+}
 
-  // Links with clickable URLs
-  if (msg.includes("linkedin")) {
-    return `🔗 LinkedIn: <a href='https://www.linkedin.com/in/zartashia-s-66b723349/' target='_blank'>https://www.linkedin.com/in/zartashia-s-66b723349/</a>`;
-  }
+if (msg.includes("email")) {
+  return `✉️ You can email me at: <a href="mailto:saleemzartashia1@gmail.com">saleemzartashia1@gmail.com</a>`;
+}
 
-  if (msg.includes("github")) {
-    return `🐱 GitHub: <a href='https://github.com/tashi128' target='_blank'>https://github.com/tashi128</a>`;
-  }
+if (msg.includes("linkedin")) {
+  return `💼 Here’s my LinkedIn: <a href="https://www.linkedin.com/in/zartashia-s-66b723349/" target="_blank">linkedin.com/in/zartashia-s</a>`;
+}
+
+if (msg.includes("github")) {
+  return `🐙 Check out my GitHub: <a href="https://github.com/tashi128" target="_blank">github.com/tashi128</a>`;
+}
+
+if (msg.includes("name")) return `🌸 My name is ${data.name}.`;
+if (msg.includes("title") || msg.includes("who are you")) return `💻 I am ${data.title}.`;
+if (msg.includes("intro") || msg.includes("about yourself") || msg.includes("summary")) return `✨ ${data.introduction}`;
+if (msg.includes("project")) return `📁 Projects:\n${data.projects}`;
+if (msg.includes("experience") || msg.includes("work") || msg.includes("job")) return `🏢 Work Experience:\n${data["work experience"]}`;
+if (msg.includes("education") || msg.includes("study")) return `🎓 Education:\n${data.education}`;
+
 
   // Fallback for irrelevant questions
   return "❌ I can only answer questions related to Zartashia's portfolio, such as skills, projects, experience, education, and contact details. 🌸";
