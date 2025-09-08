@@ -60,6 +60,13 @@ function getAnswer(message) {
   }
 
   // Portfolio-specific queries
+  if (msg.includes("contact")) 
+  return `
+📬 Here’s how you can reach me:  
+- ✉️ Email: <a href="mailto:saleemzartashia1@gmail.com">saleemzartashia1@gmail.com</a>  
+- 💼 LinkedIn: <a href="https://www.linkedin.com/in/zartashia-s-66b723349/" target="_blank">linkedin.com/in/zartashia-s</a>  
+- 🐙 GitHub: <a href="https://github.com/tashi128" target="_blank">github.com/tashi128</a>
+  `;
   if (msg.includes("name")) return `🌸 My name is ${data.name}.`;
   if (msg.includes("title") || msg.includes("who are you")) return `💻 I am ${data.title}.`;
   if (msg.includes("intro") || msg.includes("about yourself") || msg.includes("summary")) return `✨ ${data.introduction}`;
